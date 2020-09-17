@@ -1,8 +1,8 @@
 import pandas as pd
 import pprint
-import re
 import sys
 
+import reform_list as rl
 
 EXCEL_NAME = "data/saimu_data.xlsx"
 BS_SHEET = "BS"
@@ -75,25 +75,13 @@ def search_and(keywords):
             for row in new_df[sheet_name]:
                 for cell in row:
                     if type(cell) is str and key in cell:
-                        sheet_row_list.append(reform_words(row))
+                        sheet_row_list.append(rl.reform_words(row))
                         continue
-            sheet_row_list = get_unique_list(sheet_row_list)
+            sheet_row_list = rl.get_unique_list(sheet_row_list)
             new_df[sheet_name] = sheet_row_list
 
     return new_df
 
-def reform_words(words):
-    new_words = []
-    for word in words:
-        if type(word) is str:
-            new_words.append(re.sub('[\n 　]', '', word))
-        else:
-            new_words.append(word)
-    return new_words
-
-def get_unique_list(seq):
-    seen = []
-    return [x for x in seq if x not in seen and not seen.append(x)]
 
 or_searched_dict = search_or(args[1:])
 #pprint.pprint(or_searched_dict)
